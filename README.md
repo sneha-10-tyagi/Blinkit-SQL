@@ -1,16 +1,26 @@
 # 🛒 BLINKIT E-commerce SQL Data Analyst Project
 
+# 🛒 Blinkit Orders SQL Project
+
+A full-fledged SQL case study analyzing grocery order operations for a Blinkit-style hyperlocal delivery system.
+
+---
+
 ## 📌 Project Overview
 
-The goal is to simulate how actual data analysts in the e-commerce or retail industries work behind the scenes to use SQL to:
+1. **Real-world Case Study:**  
+   A simulated analysis of Blinkit-style operations using a relational PostgreSQL database with four interconnected tables.
 
-✅ Set up a messy, real-world e-commerce inventory **database**
+2. **Business-Focused Exploration:**  
+   Identified operational inefficiencies, customer patterns, and product-level risks using advanced SQL queries.
 
-✅ Perform **Exploratory Data Analysis (EDA)** to explore product categories, availability, and pricing inconsistencies
+3. **Data-Driven Decision Support:**  
+   Delivered meaningful insights to optimize delivery timing, pricing strategy, and stock management.
 
-✅ Implement **Data Cleaning** to handle null values, remove invalid entries, and convert pricing from paise to rupees
+4. **Portfolio-Ready Skills:**  
+   Demonstrates expertise in `JOINs`, `CTEs`, `DENSE_RANK()`, `NTILE()`, `CASE WHEN`, and writing real-world business logic in SQL.
 
-✅ Write **business-driven SQL queries** to derive insights around **pricing, inventory, stock availability, revenue** and more
+---
 
 ## 📁 Dataset Overview
 
@@ -71,7 +81,7 @@ Captures actual delivery metrics for each order, including delays, distances, an
 - **delivery_status:** Actual delivery status (e.g., *On Time*, *Delayed*)
 - **reasons_if_delayed:** Text field describing reasons for delay (e.g., *Traffic*, *Rain*, or left blank if on time)
 
--- 
+---
 
 ### 🧾 Table: `products`
 
@@ -89,3 +99,94 @@ Contains metadata and inventory details for each product listed in the platform�
 - **min_stock_level:** Minimum number of units to keep in stock before triggering restock
 - **max_stock_level:** Maximum allowed stock level for inventory control
 
+---
+
+## 🧪 Data Exploration
+
+A detailed exploration was performed (see `exploration.sql`), covering:
+
+- Order volume and date ranges
+- Customer count and payment methods
+- Order-item relationships and frequent products
+- Delay patterns across delivery partners and times of day
+- Data integrity checks: orphaned keys, negative values, nulls
+
+---
+
+## 🧹 Data Cleaning Status
+
+**No explicit cleaning was needed**. Here’s why:
+
+- All foreign key relationships were validated (no orphans)
+- No nulls or invalid values in critical columns
+- Negative delivery times were rare but explainable (early deliveries)
+- Price and margin inconsistencies were business-valid (e.g., discounts)
+
+✔️ The data was well-structured and analysis-ready out of the box.
+
+---
+
+## ⚠️ Known Data Limitations
+
+1. **One order per store ID**  
+   → Each `store_id` appears only once in the dataset, making it unsuitable for store-level trend or consistency analysis.
+
+2. **Mismatch between `order_total` and item-level computed total**  
+   → The `orders.order_total` field often doesn’t match the sum of `quantity * unit_price` from `order_items`.  
+   Likely due to:
+   - Precomputed totals (at checkout)
+   - Discounts or charges not captured at item level
+   - Partial or synthetic dataset
+
+> ✅ This has been accounted for in analysis — any insights depending on true order value rely directly on `orders.order_total`.
+
+---
+
+## 📊 Business Insights (see `business_insights.sql`)
+
+This project goes beyond exploration to uncover **data-backed insights** across operations, customer behavior, and inventory management:
+
+### 🧮 Inventory + Product-Level
+
+- **Which products generate the highest revenue per stock capacity?**
+- **High margin, low-selling products** → Flag pricing inefficiencies
+- **Short shelf-life + overstocked + slow-selling products** → At-risk inventory detection (📦⚠️)
+
+### 🚚 Delivery Operations
+
+- **Most consistent delivery partners** (lowest standard deviation)
+- **Time of day with highest delivery delays**
+- **Stress score for delivery partners**, categorized using DENSE_RANK + NTILE
+- **Low-efficiency deliveries** → Long distances for low-value orders
+
+### 💸 Customer Behavior
+
+- **Top 10% of customers by spend** using NTILE (deciles)
+- **Are high-value orders delivered faster?**  
+
+## 💡 Highlighted Insight Example
+
+> 🧠 **Observation:**  
+> There is no clear correlation between higher order value and faster delivery.
+
+> 💼 **Business Insight:**  
+> High-value customers may not be receiving prioritized service. Optimizing delivery for these users could improve loyalty and satisfaction.
+
+---
+
+## 📂 Files Included
+
+- `schema.sql` — Table creation (already included earlier)
+- `exploration.sql` — Initial exploration and validation queries
+- `business_insights.sql` — Deeper analytical queries with CTEs, window functions, and categorization logic
+
+---
+
+## 📌 Tools Used
+
+- PostgreSQL (v17)
+- pgAdmin for database and data import
+- Excel/CSV preprocessing
+- Tableau (planned for dashboard - coming next)
+
+---
