@@ -1,4 +1,4 @@
-# 🛒 BLINKIT E-commerce SQL Data Analyst Portfolio Project
+# 🛒 BLINKIT E-commerce SQL Data Analyst Project
 
 ## 📌 Project Overview
 
