@@ -1,7 +1,5 @@
 # 🛒 BLINKIT E-commerce SQL Data Analyst Project
 
-# 🛒 Blinkit Orders SQL Project
-
 A full-fledged SQL case study analyzing grocery order operations for a Blinkit-style hyperlocal delivery system.
 
 ---
