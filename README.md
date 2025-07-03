@@ -19,6 +19,7 @@ The dataset simulates a real-world e-commerce delivery system similar to Blinkit
 - `orders`
 - `order_items`
 - `delivery_performance`
+- `products`
 
 Each table captures a distinct aspect of the system and is linked via the `order_id` key. The data has been cleaned and normalized for relational analysis.
 
@@ -69,3 +70,22 @@ Captures actual delivery metrics for each order, including delays, distances, an
 - **distance_km:** Distance covered by the delivery in kilometers
 - **delivery_status:** Actual delivery status (e.g., *On Time*, *Delayed*)
 - **reasons_if_delayed:** Text field describing reasons for delay (e.g., *Traffic*, *Rain*, or left blank if on time)
+
+-- 
+
+### 🧾 Table: `products`
+
+Contains metadata and inventory details for each product listed in the platform’s catalog. Each row represents a unique product SKU, including pricing, category, brand, and stock control metrics.
+
+**Columns:**
+- **product_id:** Unique identifier for each product (Primary Key)
+- **product_name:** Name of the product (e.g., Onions, Potatoes)
+- **category:** Category under which the product is listed (e.g., *Fruits & Vegetables*, *Dairy*, *Snacks*)
+- **brand:** Brand or supplier associated with the product
+- **price:** Selling price shown to customers (in ₹)
+- **mrp:** Maximum Retail Price of the product (in ₹)
+- **margin_percentage:** Percentage margin between price and MRP
+- **shelf_life_days:** Shelf life of the product in days (used for perishability tracking)
+- **min_stock_level:** Minimum number of units to keep in stock before triggering restock
+- **max_stock_level:** Maximum allowed stock level for inventory control
+
