@@ -1,4 +1,4 @@
-# 🛒 BLINKIT E-commerce SQL Data Analyst Project
+# 🛒 BLINKIT E-commerce SQL Project
 
 A full-fledged SQL case study analyzing grocery order operations for a Blinkit-style hyperlocal delivery system.
 
@@ -15,14 +15,11 @@ A full-fledged SQL case study analyzing grocery order operations for a Blinkit-s
 3. **Data-Driven Decision Support:**  
    Delivered meaningful insights to optimize delivery timing, pricing strategy, and stock management.
 
-4. **Portfolio-Ready Skills:**  
-   Demonstrates expertise in `JOINs`, `CTEs`, `DENSE_RANK()`, `NTILE()`, `CASE WHEN`, and writing real-world business logic in SQL.
-
 ---
 
 ## 📁 Dataset Overview
 
-The dataset simulates a real-world e-commerce delivery system similar to Blinkit or Zepto. It contains customer order details, itemized product information, and delivery performance metrics — structured into three interrelated tables:
+The dataset simulates a real-world e-commerce delivery system. It contains customer order details, product information, and delivery performance metrics — structured into four interrelated tables:
 
 - `orders`
 - `order_items`
@@ -57,11 +54,9 @@ This table breaks down each order into individual products. Each row represents 
 
 **Columns:**
 - **order_id:** ID of the associated order (Foreign Key)
-- **product_id:** specific product variant (like size, brand, packaging)
+- **product_id:** Specific product variant (like size, brand, packaging)
 - **quantity:** Number of units of the product in the order
 - **unit_price:** Price per unit of the product (in ₹)
-
-> ℹ️ Composite Primary Key: (`order_id`, `product_id`) ensures uniqueness of each line item per order.
 
 ---
 
@@ -113,78 +108,93 @@ A detailed exploration was performed (see `exploration.sql`), covering:
 
 ## 🧹 Data Cleaning Status
 
-**No explicit cleaning was needed**. Here’s why:
+**No explicit cleaning was needed.** Here’s why:
 
-- All foreign key relationships were validated (no orphans)
+- All foreign key relationships were validated (no orphaned keys)
 - No nulls or invalid values in critical columns
-- Negative delivery times were rare but explainable (early deliveries)
-- Price and margin inconsistencies were business-valid (e.g., discounts)
+- Negative delivery times were explainable (early deliveries)
+- Price mismatches between MRP and sale price represent real-world discounting logic
 
-✔️ The data was well-structured and analysis-ready out of the box.
+✔️ The dataset was clean and well-structured for SQL analysis.
 
 ---
 
 ## ⚠️ Known Data Limitations
 
 1. **One order per store ID**  
-   → Each `store_id` appears only once in the dataset, making it unsuitable for store-level trend or consistency analysis.
+   → Each `store_id` appears only once, preventing any store-level trend or consistency analysis.
 
-2. **Mismatch between `order_total` and item-level computed total**  
-   → The `orders.order_total` field often doesn’t match the sum of `quantity * unit_price` from `order_items`.  
-   Likely due to:
-   - Precomputed totals (at checkout)
-   - Discounts or charges not captured at item level
-   - Partial or synthetic dataset
+2. **One delivery per delivery person**  
+   → Each `delivery_partner_id` appears only once, preventing any delivery trend or order consistency analysis of the delivery partners.
 
-> ✅ This has been accounted for in analysis — any insights depending on true order value rely directly on `orders.order_total`.
+3. **Mismatch between `order_total` and item-level total**  
+   → The total order value does not always equal the sum of product prices from `order_items`.  
+   Possible reasons include:
+   - Discounts or service charges not reflected at the item level
+   - Synthetic nature of dataset
+   - Precomputed totals (similar to real-world checkout flows)
+
+> ✅ Accounted for during analysis. For monetary insights, `orders.order_total` was prioritized.
 
 ---
 
 ## 📊 Business Insights (see `business_insights.sql`)
 
-This project goes beyond exploration to uncover **data-backed insights** across operations, customer behavior, and inventory management:
+The project provides **advanced business analysis** using SQL constructs such as CTEs, DENSE_RANK, NTILE, CASE, and window functions.
 
-### 🧮 Inventory + Product-Level
+---
 
-- **Which products generate the highest revenue per stock capacity?**
-- **High margin, low-selling products** → Flag pricing inefficiencies
-- **Short shelf-life + overstocked + slow-selling products** → At-risk inventory detection (📦⚠️)
-
-### 🚚 Delivery Operations
-
-- **Most consistent delivery partners** (lowest standard deviation)
-- **Time of day with highest delivery delays**
-- **Stress score for delivery partners**, categorized using DENSE_RANK + NTILE
-- **Low-efficiency deliveries** → Long distances for low-value orders
-
-### 💸 Customer Behavior
-
-- **Top 10% of customers by spend** using NTILE (deciles)
-- **Are high-value orders delivered faster?**  
-
-## 💡 Highlighted Insight Example
+## 📌 Highlighted Insight Example
 
 > 🧠 **Observation:**  
-> There is no clear correlation between higher order value and faster delivery.
+> High-value orders are not consistently delivered faster than lower-value orders.
 
 > 💼 **Business Insight:**  
-> High-value customers may not be receiving prioritized service. Optimizing delivery for these users could improve loyalty and satisfaction.
+> High-paying customers may not be receiving preferred delivery service. Prioritizing these users can improve satisfaction and retention.
+
+---
+
+## 📊 Tableau Dashboard
+
+A visual layer was added on top of the SQL insights using Tableau.
+
+📌 **View Dashboard:**  
+🔗 [DASHBOARD – Logistics & Order Analysis (Tableau Public)](https://public.tableau.com/views/Book1_17527653100040/DASHBOARD-LogisticsOrderAnalysis?:language=en-GB&publish=yes)
+
+The dashboard covers:
+
+- Product revenue by stock capacity
+- At-risk inventory detection
+- High cost, low quantity order
+- Top customer segments of both years
+- High margin, low sales products
+- Average delivery delay by time of the day
+
+> 🧩 Charts are organized across 6 analytical views with filters by category, time, and orders.
 
 ---
 
 ## 📂 Files Included
 
-- `schema.sql` — Table creation (already included earlier)
-- `exploration.sql` — Initial exploration and validation queries
-- `business_insights.sql` — Deeper analytical queries with CTEs, window functions, and categorization logic
+| Filename              | Description                                      |
+|-----------------------|--------------------------------------------------|
+| `schema.sql`          | SQL code for table creation                      |
+| `exploration.sql`     | Data exploration and validation queries          |
+| `business_insights.sql` | Advanced queries for business analysis         |
+| `blinkit_dashboard.twbx` | Tableau workbook file if exported             |
 
 ---
 
-## 📌 Tools Used
+## 🛠️ Tools Used
 
 - PostgreSQL (v17)
-- pgAdmin for database and data import
-- Excel/CSV preprocessing
-- Tableau (planned for dashboard - coming next)
+- pgAdmin
+- Tableau Public
 
 ---
+
+## 🧾 Author Note
+
+This is the first complete project under my Data Analyst journey — proudly built from schema design to advanced querying and visualization.  
+Any feedback or suggestions are welcome!
+
